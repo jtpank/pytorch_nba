@@ -3,5 +3,5 @@ Neural Net with MSE Loss
 
 Basic functioning neural net, with MSE loss function, RELU activation function.
 
-Setup virtualenv
-Intstall pytorch library
+1. Setup virtualenv
+2. Install pytorch library
