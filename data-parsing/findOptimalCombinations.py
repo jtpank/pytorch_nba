@@ -1,17 +1,17 @@
 import csv
 # knapsack problem with more constraints
-def optimalLineup(playerCosts, remainingSalary, fantasyPointsValue, n, playerIds, currentRoster):
+def optimalLineupCaptainMode(playerCosts, remainingSalary, fantasyPointsValue, n, playerIds, currentRoster):
     if n == 0 or remainingSalary == 0 or len(currentRoster) == 5:
         return 0, []
 
     if playerCosts[n-1] > remainingSalary:
-        return optimalLineup(playerCosts, remainingSalary, fantasyPointsValue, n-1, playerIds, currentRoster)
+        return optimalLineupCaptainMode(playerCosts, remainingSalary, fantasyPointsValue, n-1, playerIds, currentRoster)
 
-    exclude_points, exclude_roster = optimalLineup(
+    exclude_points, exclude_roster = optimalLineupCaptainMode(
         playerCosts, remainingSalary, fantasyPointsValue, n-1, playerIds, currentRoster
     )
 
-    include_points, include_roster = optimalLineup(
+    include_points, include_roster = optimalLineupCaptainMode(
         playerCosts, remainingSalary - playerCosts[n-1], fantasyPointsValue, n-1, playerIds, currentRoster + [playerIds[n-1]])
 
     if include_points + fantasyPointsValue[n-1] > exclude_points:
@@ -19,6 +19,8 @@ def optimalLineup(playerCosts, remainingSalary, fantasyPointsValue, n, playerIds
         return include_points + fantasyPointsValue[n-1], include_roster
     else:
         return exclude_points, exclude_roster
+
+
 
 def removeElementFromArrAtIndex(arr, index):
     if 0 <= index < len(arr):
@@ -145,7 +147,7 @@ def main():
         playerCostNew = removeElementFromArrAtIndex(playerCost, i)
         fppgNew = removeElementFromArrAtIndex(fppg, i)
         n = len(fppgNew)
-        max_points, selected_players = optimalLineup(playerCostNew, newSalary, fppgNew, n, playerIdNew, currentRoster)
+        max_points, selected_players = optimalLineupCaptainMode(playerCostNew, newSalary, fppgNew, n, playerIdNew, currentRoster)
         print(f"Captain: {captain}, Lineup \t{sorted(selected_players)}, projected pts: {max_points + cptPointsAdded}")
 
 
